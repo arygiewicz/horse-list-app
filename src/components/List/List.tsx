@@ -26,7 +26,13 @@ const List: React.FC<{}> = () => {
           <ListItem item={i} key={ix} setDetails={setHorseDetails} />
         )}
       </ul>
-      {horseDetails ? <Modal details={horseDetails} /> : null}
+      {horseDetails ? (
+        <Modal
+          details={horseDetails} 
+          setList={setHorseList} 
+          setDetails={setHorseDetails}
+        />
+      ) : null}
     </div>
   );
 };

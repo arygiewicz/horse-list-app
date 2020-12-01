@@ -41,6 +41,8 @@ const Input = styled.input`
 
 type Props = {
   details: Horse;
+  setDetails: (item: Horse | undefined) => void;
+  setList: (value: Horse[]) => void
 };
 
 type Values = {
@@ -50,7 +52,7 @@ type Values = {
   weight?: number;
 }
 
-const Modal: React.FC<Props> = ({ details }) => {
+const Modal: React.FC<Props> = ({ details, setDetails, setList }) => {
   const { name, profile } = details;
   const { physical, favouriteFood } = profile;
   const { height, weight } = physical;
@@ -75,6 +77,12 @@ const Modal: React.FC<Props> = ({ details }) => {
       headers: {
         'Content-Type': 'application/json',
       },
+    }).then(() => {
+      fetch(`${url}/horse`, { method: 'GET' })
+      .then((res) => res.json())
+      .then((res) => setList(res))
+    }).then(() => {
+      setDetails(undefined);
     }).catch((err) => {
       console.error(err);
     })
