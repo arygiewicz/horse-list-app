@@ -95,7 +95,7 @@ const Modal: React.FC<Props> = ({ details, setDetails, setList }) => {
 
   return (
     <Content>
-      <CloseIcon>
+      <CloseIcon onClick={() => setDetails(undefined)}>
         x
       </CloseIcon>
       <Form onSubmit={formik.handleSubmit}>
