@@ -1,26 +1,26 @@
 import React from 'react';
+import styled from 'styled-components';
 
-type Horse = {
-  id: string;
-  name: string;
-  profile: {
-    favouriteFood?: string;
-    physical: {
-      height?: number;
-      weight?: number;
-    };
-  };
-}; 
+import { Horse } from '../../types';
+
+const Item = styled.span`
+  &:hover {
+    cursor: pointer;
+  }
+`
 
 type Props = {
   item: Horse;
+  setDetails: (item: Horse) => void;
 };
 
-const ListItem: React.FC<Props> = ({ item }) => (
+const ListItem: React.FC<Props> = ({ item, setDetails }) => (
   <li>
-    <span>
+    <Item onClick={() => {
+      setDetails(item)
+    }}>
       {item.name}
-    </span>
+    </Item>
   </li>
 );
 

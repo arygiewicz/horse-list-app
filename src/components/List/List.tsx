@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
+
 import ListItem from '../ListItem/ListItem';
+import Modal from '../Modal/Modal';
+import { Horse } from '../../types';
+import { url } from '../../constants';
+
 
 const List: React.FC<{}> = () => {
-  const [horseList, setHorseList] = useState([]);
-
-  const url = 'http://localhost:3016';
+  const [horseList, setHorseList] = useState<Horse[]>([]);
+  const [horseDetails, setHorseDetails] = useState<Horse | undefined>(undefined);
 
   useEffect(() => {
     fetch(`${url}/horse`, { method: 'GET' })
@@ -16,11 +20,14 @@ const List: React.FC<{}> = () => {
   }, []);
 
   return (
-    <ul>
-      {horseList.map((i, ix) =>
-        <ListItem item={i} key={ix} />
-      )}
-    </ul>
+    <div>
+      <ul>
+        {horseList.map((i, ix) =>
+          <ListItem item={i} key={ix} setDetails={setHorseDetails} />
+        )}
+      </ul>
+      {horseDetails ? <Modal details={horseDetails} /> : null}
+    </div>
   );
 };
 

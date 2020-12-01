@@ -16,7 +16,7 @@ const mockHorse = {
 
 describe('ListItem component', () => {
   it('renders list item', async () => {
-    render(<ListItem item={mockHorse} />);
+    render(<ListItem item={mockHorse} setDetails={() => undefined} />);
     expect(screen.getByText(/name/i)).toBeInTheDocument();
   });
 });
