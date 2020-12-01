@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useFormik } from 'formik';
+import { FormikErrors, FormikValues, useFormik } from 'formik';
 
 import { Horse } from '../../types';
 import { url } from '../../constants';
 
 const Content = styled.div`
   position: absolute;
-  top: 15%;
+  top: 25%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #D2D2D2;
@@ -30,13 +30,16 @@ const CloseIcon = styled.span`
   }
 `
 
-const Form = styled.form`
+const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 8px;
 `
 
-const Input = styled.input`
-  margin-bottom: 8px;
+const Error = styled.p`
+  font-size: 12px;
+  margin: 0;
+  color: red;
 `
 
 type Props = {
@@ -65,8 +68,8 @@ const Modal: React.FC<Props> = ({ details, setDetails, setList }) => {
       profile: {
         favouriteFood,
         physical: {
-          height: Number(height),
-          weight: Number(weight),
+          height: height,
+          weight: weight,
         }
       }
     };
@@ -87,10 +90,18 @@ const Modal: React.FC<Props> = ({ details, setDetails, setList }) => {
       console.error(err);
     })
   };
+  
 
   const formik = useFormik({
     initialValues: { name, favouriteFood, height, weight },
     onSubmit: values => handleSubmit(values),
+    validate: values => {
+      let errors: FormikErrors<FormikValues> = {};
+      if (!values.name) {
+        errors.name = 'Name is required';
+      }
+      return errors;
+    },
   });
 
   return (
@@ -98,41 +109,50 @@ const Modal: React.FC<Props> = ({ details, setDetails, setList }) => {
       <CloseIcon onClick={() => setDetails(undefined)}>
         x
       </CloseIcon>
-      <Form onSubmit={formik.handleSubmit}>
-        <label htmlFor="name">Name:</label>
-        <Input
-          id="name"
-          name="name"
-          type="text"
-          onChange={formik.handleChange}
-          value={formik.values.name}
-        />
-        <label htmlFor="food">Favourite food:</label>
-        <Input
-          id="food"
-          name="favouriteFood"
-          type="text"
-          onChange={formik.handleChange}
-          value={formik.values.favouriteFood}
-        />
-        <label htmlFor="height">Height:</label>
-        <Input
-          id="height"
-          name="height"
-          type="number"
-          onChange={formik.handleChange}
-          value={formik.values.height}
-        />
-        <label htmlFor="weight">Weight:</label>
-        <Input
-          id="weight"
-          name="weight"
-          type="number"
-          onChange={formik.handleChange}
-          value={formik.values.weight}
-        />
+      <form onSubmit={formik.handleSubmit}>
+        <InputWrapper>
+          <label htmlFor="name">Name:</label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            onChange={formik.handleChange}
+            value={formik.values.name}
+          />
+          {formik.errors.name ? <Error>{formik.errors.name}</Error> : null}
+        </InputWrapper>
+        <InputWrapper>
+          <label htmlFor="food">Favourite food:</label>
+          <input
+            id="food"
+            name="favouriteFood"
+            type="text"
+            onChange={formik.handleChange}
+            value={formik.values.favouriteFood}
+          />
+        </InputWrapper>
+        <InputWrapper>
+          <label htmlFor="height">Height:</label>
+          <input
+            id="height"
+            name="height"
+            type="number"
+            onChange={formik.handleChange}
+            value={formik.values.height}
+          />
+        </InputWrapper>
+        <InputWrapper>
+          <label htmlFor="weight">Weight:</label>
+          <input
+            id="weight"
+            name="weight"
+            type="number"
+            onChange={formik.handleChange}
+            value={formik.values.weight}
+          />
+        </InputWrapper>
         <button type="submit">Save</button>
-      </Form>
+      </form>
     </Content>
   );
 };
