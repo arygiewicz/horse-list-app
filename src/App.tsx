@@ -1,11 +1,19 @@
 import React from 'react';
+import List from './components/List/List';
+import Header from './components/Header/Header';
+import styled from 'styled-components';
 
-function App() {
+const Container = styled.div`
+  padding: 10px;
+`
+
+const App = () => {
   return (
-    <div>
-      
-    </div>
+    <Container>
+      <Header />
+      <List />
+    </Container>
   );
-}
+};
 
 export default App;
